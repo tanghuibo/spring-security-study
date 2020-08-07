@@ -1,4 +1,4 @@
-package io.tanghuibo.springsecuritystudy;
+package io.github.tanghuibo.springsecuritystudy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
