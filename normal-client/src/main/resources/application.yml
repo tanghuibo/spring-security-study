@@ -1,7 +1,1 @@
-spring:
-  security:
-    user:
-      roles:
-        - admin
-      name: admin
-      password: admin123
+
