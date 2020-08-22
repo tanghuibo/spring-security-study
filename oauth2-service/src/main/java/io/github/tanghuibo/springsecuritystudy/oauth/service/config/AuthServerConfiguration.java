@@ -1,5 +1,7 @@
 package io.github.tanghuibo.springsecuritystudy.oauth.service.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +12,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.annotation.Resource;
 
@@ -29,6 +33,13 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
 
     @Resource
     AuthenticationManager authenticationManager;
+
+
+    @Qualifier("myJwtAccessTokenConverter")
+    @Autowired
+    JwtAccessTokenConverter accessTokenConverter;
+    @Resource
+    TokenStore tokenStore;
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //这里client使用存在模式，可以实际过程调整为jdbc的方式
@@ -57,5 +68,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
         endpoints.authenticationManager(authenticationManager);
         endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         endpoints.userDetailsService(userDetailsService);
+        endpoints.tokenStore(tokenStore);
+        endpoints.accessTokenConverter(accessTokenConverter);
     }
 }

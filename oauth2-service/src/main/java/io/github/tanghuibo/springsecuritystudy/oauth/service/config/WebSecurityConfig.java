@@ -16,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @date 2020/8/18上午12:11
  */
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsService buildUserDetailsService() {

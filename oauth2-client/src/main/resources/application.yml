@@ -9,4 +9,5 @@ security:
       access-token-uri: http://127.0.0.1:8081/oauth/token
       user-authorization-uri: http://127.0.0.1:8081/oauth/authorize
     resource:
-      token-info-uri: http://127.0.0.1:8081/oauth/check_token
+      jwt:
+        key-value: test123
