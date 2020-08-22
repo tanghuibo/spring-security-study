@@ -1,9 +1,12 @@
+server:
+  port: 8082
+
 security:
   oauth2:
     client:
-      client-id: clientId
-      client-secret: clientSecret
-      scope: scope1, scope2, scope3, scope4
-      registered-redirect-uri: http://127.0.0.1:8081
-server:
-  port: 8082
+      client-id: client1
+      client-secret: test
+      access-token-uri: http://127.0.0.1:8081/oauth/token
+      user-authorization-uri: http://127.0.0.1:8081/oauth/authorize
+    resource:
+      token-info-uri: http://127.0.0.1:8081/oauth/check_token
