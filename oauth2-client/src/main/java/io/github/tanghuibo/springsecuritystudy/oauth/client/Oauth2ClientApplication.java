@@ -2,6 +2,7 @@ package io.github.tanghuibo.springsecuritystudy.oauth.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @date 2020/8/19下午11:13
  */
 @SpringBootApplication
-@EnableResourceServer
+@EnableOAuth2Sso
 public class Oauth2ClientApplication {
 
     public static void main(String[] args) {
