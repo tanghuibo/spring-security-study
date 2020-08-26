@@ -2,20 +2,27 @@ package io.github.tanghuibo.springsecuritystudy.oauth.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.util.SerializationUtils;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.annotation.Resource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author tanghuibo
@@ -70,5 +77,30 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
         endpoints.userDetailsService(userDetailsService);
         endpoints.tokenStore(tokenStore);
         endpoints.accessTokenConverter(accessTokenConverter);
+        endpoints.authorizationCodeServices(authorizationCodeServices());
+    }
+
+
+    @Bean
+    AuthorizationCodeServices authorizationCodeServices() {
+
+        Map<String, byte[]> data = new ConcurrentHashMap<>(100);
+        return new RandomValueAuthorizationCodeServices() {
+
+            @Override
+            protected void store(String code, OAuth2Authentication authentication) {
+                byte[] serialize = SerializationUtils.serialize(authentication);
+                data.put(code, serialize);
+            }
+
+            @Override
+            protected OAuth2Authentication remove(String code) {
+                byte[] bytes = data.remove(code);
+                if(bytes == null) {
+                    return null;
+                }
+                return SerializationUtils.deserialize(bytes);
+            }
+        };
     }
 }
