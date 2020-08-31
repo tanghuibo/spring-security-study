@@ -6,8 +6,8 @@ security:
     client:
       client-id: client1
       client-secret: test
-      access-token-uri: http://127.0.0.1:8081/oauth/token
-      user-authorization-uri: http://127.0.0.1:8081/oauth/authorize
+      access-token-uri: http://127.0.0.1:8081/serve/oauth/token
+      user-authorization-uri: http://127.0.0.1:8081/serve/oauth/authorize
     resource:
       jwt:
         key-value: test123
